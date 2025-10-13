@@ -39,25 +39,26 @@
     </div>
   </div>
   <!-- Building Info Modal -->
-  <div id="building-modal" class="mga-modal" aria-hidden="true" role="dialog" aria-label="Building details">
-    <div class="mga-modal__backdrop" onclick="closeBuildingInfo()"></div>
-    <div class="mga-modal__dialog" role="document">
-      <button class="mga-modal__close" type="button" onclick="closeBuildingInfo()" aria-label="Close">×</button>
-      <div class="mga-modal__media">
-        <img id="bm-img" alt="" />
-      </div>
-      <div class="mga-modal__body">
-        <h3 id="bm-title"></h3>
-        <p id="bm-campus" class="muted" style="margin-top:-6px"></p>
-        <p id="bm-desc" style="margin-top:8px"></p>
-      </div>
+<div id="building-modal" class="mga-modal" aria-hidden="true" role="dialog" aria-label="Building details">
+  <div class="mga-modal__backdrop" data-close-modal></div>
+  <div class="mga-modal__dialog" role="document">
+    <button class="mga-modal__close" type="button" data-close-modal aria-label="Close">×</button>
+    <div class="mga-modal__media">
+      <img id="bm-img" alt="" />
+    </div>
+    <div class="mga-modal__body">
+      <h3 id="bm-title"></h3>
+      <p id="bm-campus" class="muted" style="margin-top:-6px"></p>
+      <p id="bm-desc" style="margin-top:8px"></p>
     </div>
   </div>
+</div>
 
   <!-- Only this script -->
   <script src="NavApp_fixed.js"></script>
 </div>
 </html>
+
 
 
 
