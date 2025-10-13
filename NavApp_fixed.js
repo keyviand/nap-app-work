@@ -121,8 +121,20 @@ const campuses = [
   }
 
   // expose (optional)
-  window.openBuildingInfo = openModal;
+  ow.openBuildingInfo = openModal;
   window.closeBuildingInfo = closeModal;
+// Allow map popup button to open the modal using campus+index
+window.openBuildingInfoFromMap = function (campusId, bIndex) {
+  const campus = campuses.find(c => c.id === campusId);
+  if (!campus) return;
+  const b = campus.buildings[bIndex];
+  window.openBuildingInfo({
+    name: b.name,
+    desc: b.desc || "",
+    campus: campus.name,
+    image: b.image || ""
+  });
+};
 
   // delegate clicks for any .js-building-info button
   document.addEventListener("click", (e) => {
@@ -463,20 +475,25 @@ function showCampus(campusId){
     <p class="muted">${campus.address}</p>
     <h3>Buildings</h3>
     <div class="buildings-list">`;
-  campus.buildings.forEach((b, idx) => {
-  html += `<div class="building">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-        <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
-          <h4 style="margin-bottom:4px;">${b.name}</h4>
-          <p class="muted" style="margin:0;">${b.desc || ""}</p>
+    campus.buildings.forEach((b, idx) => {
+    html += `<div class="building">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
+            <h4 style="margin-bottom:4px;">${b.name}</h4>
+            <p class="muted" style="margin:0;">${b.desc || ""}</p>
+          </div>
+          <button
+            type="button"
+            class="back-btn js-building-info"
+            style="white-space:nowrap;"
+            data-name="${b.name.replace(/"/g,'&quot;')}"
+            data-desc="${(b.desc || "").replace(/"/g,'&quot;')}"
+            data-campus="${campus.name.replace(/"/g,'&quot;')}"
+            data-image="${(b.image || "").replace(/"/g,'&quot;')}"
+          >ℹ️ Info</button>
         </div>
-        <button type="button" class="back-btn" style="white-space:nowrap;"
-          onclick="openBuildingInfo(${JSON.stringify({ name:b.name, desc:b.desc||'', image:b.image||null })}, ${JSON.stringify(campus.name)})">
-          ℹ️ Info
-        </button>
-      </div>
-    </div>`;
-});
+      </div>`;
+  });
 
   html += `</div>`;
   const resDiv = document.getElementById("results");
