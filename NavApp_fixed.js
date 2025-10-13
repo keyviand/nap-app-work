@@ -120,21 +120,22 @@ const campuses = [
     modal.setAttribute("aria-hidden", "true");
   }
 
-  // expose (optional)
-  ow.openBuildingInfo = openModal;
+  // expose
+  window.openBuildingInfo = openModal;
   window.closeBuildingInfo = closeModal;
-// Allow map popup button to open the modal using campus+index
-window.openBuildingInfoFromMap = function (campusId, bIndex) {
-  const campus = campuses.find(c => c.id === campusId);
-  if (!campus) return;
-  const b = campus.buildings[bIndex];
-  window.openBuildingInfo({
-    name: b.name,
-    desc: b.desc || "",
-    campus: campus.name,
-    image: b.image || ""
-  });
-};
+
+  // Allow map popup button to open the modal using campus+index
+  window.openBuildingInfoFromMap = function (campusId, bIndex) {
+    const campus = campuses.find(c => c.id === campusId);
+    if (!campus) return;
+    const b = campus.buildings[bIndex];
+    window.openBuildingInfo({
+      name: b.name,
+      desc: b.desc || "",
+      campus: campus.name,
+      image: b.image || ""
+    });
+  };
 
   // delegate clicks for any .js-building-info button
   document.addEventListener("click", (e) => {
@@ -155,6 +156,7 @@ window.openBuildingInfoFromMap = function (campusId, bIndex) {
     if (e.key === "Escape") closeModal();
   });
 })();
+
 
 /* ======= Map & UI State ======= */
 let map;
