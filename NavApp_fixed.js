@@ -45,7 +45,7 @@ const campuses = [
     lat: 32.808092, lng: -83.732058,
     buildings: [
       { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services" },
-      { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "Library", image: "IMG/Library,_Middle_Georgia_State_University_Macon_campus.jpg" },
+      { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "Library", image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg" },
       { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities" },
       { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services" },
       { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math" },
@@ -57,9 +57,9 @@ const campuses = [
       { name: "Music (MUS)", lat: 32.811622, lng: -83.731222, desc: "Music" },
       { name: "Arts Complex (ART)", lat: 32.809319, lng: -83.731806, desc: "Art" },
       { name: "School of Arts & Letters (SOAL)", lat: 32.80894, lng: -83.732091, desc: "" },
-      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", image: "IMG/wellness.jpg" },
-      { name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", image: "IMG/lakeview Pointe.jpg" },
-      { name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", image: "IMG/university pointe.jpg" },
+      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", image: "wellness.jpg" },
+{ name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", image: "lakeview Pointe.jpg" },
+{ name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", image: "university pointe.jpg" },
       { name: "Peyton T. Anderson Enrollment Center (PAC)", lat: 32.809854, lng: -83.729129, desc: "Enrollment" }
     ]
   },
@@ -79,7 +79,7 @@ const campuses = [
     address: "100 University Boulevard, Warner Robins, GA 31093",
     lat: 32.613917, lng: -83.605486,
     buildings: [
-      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life" },
+      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life", image: "WR Thomas Hall.jpg" },
       { name: "Academic Services Building", lat: 32.617840, lng: -83.608701, desc: "Classrooms, labs, Walker Auditorium" },
       { name: "Oak Hall", lat: 32.615262, lng: -83.607937, desc: "Academic Resource Center" }
     ]
@@ -96,7 +96,45 @@ const campuses = [
     ]
   }
 ];
+/* ======= Building Info Modal ======= */
+function resolveImagePath(building){
+  if (building.image) return building.image;                     // preferred explicit path
+  // fallback: try a simple guess from the name (spaces kept)
+  const guess = `${building.name}.jpg`;
+  return guess;
+}
 
+function openBuildingInfo(building, campusName){
+  const modal = document.getElementById("building-modal");
+  if (!modal) return;
+
+  const title = document.getElementById("bm-title");
+  const campus = document.getElementById("bm-campus");
+  const desc   = document.getElementById("bm-desc");
+  const img    = document.getElementById("bm-img");
+
+  title.textContent  = building.name || "Building";
+  campus.textContent = campusName || "";
+  desc.textContent   = building.desc || "No description available.";
+
+  const src = resolveImagePath(building);
+  img.src = src;
+  img.alt = building.name ? `${building.name} photo` : "Building photo";
+  // show modal
+  modal.setAttribute("aria-hidden", "false");
+}
+window.closeBuildingInfo = function(){ 
+  const modal = document.getElementById("building-modal"); 
+  if (modal) modal.setAttribute("aria-hidden", "true"); 
+};
+
+// helper used from marker popups (string-safe)
+window.openBuildingInfoFromMap = function(campusId, bIndex){
+  const campus = campuses.find(c => c.id === campusId);
+  if (!campus) return;
+  const b = campus.buildings[bIndex];
+  openBuildingInfo(b, campus.name);
+};
 
 /* ======= Map & UI State ======= */
 let map;
@@ -393,11 +431,21 @@ function showCampus(campusId){
     .bindPopup(`<b>${campus.name}</b><br>${campus.address}`);
   markers.push(campusMarker);
 
-  campus.buildings.forEach(b => {
-    const marker = L.marker([b.lat, b.lng], { icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] }) })
-      .addTo(map).bindPopup(`<b>${b.name}</b><br>${b.desc || ""}`);
-    markers.push(marker);
-  });
+  campus.buildings.forEach((b, idx) => {
+  const marker = L.marker([b.lat, b.lng], {
+      icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] })
+    })
+    .addTo(map)
+    .bindPopup(`
+      <div style="min-width:220px">
+        <b>${b.name}</b><br>${b.desc || ""}
+        <div style="margin-top:8px;">
+          <button type="button" class="back-btn" onclick="openBuildingInfoFromMap(${campus.id}, ${idx})">More info</button>
+        </div>
+      </div>
+    `);
+  markers.push(marker);
+});
 
   map.setView([campus.lat, campus.lng], 15);
 
@@ -407,10 +455,21 @@ function showCampus(campusId){
     <p class="muted">${campus.address}</p>
     <h3>Buildings</h3>
     <div class="buildings-list">`;
-  campus.buildings.forEach(b => {
-    html += `<div class="building" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
-      <h4>${b.name}</h4><p class="muted">${b.desc || ""}</p></div>`;
-  });
+  campus.buildings.forEach((b, idx) => {
+  html += `<div class="building">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
+          <h4 style="margin-bottom:4px;">${b.name}</h4>
+          <p class="muted" style="margin:0;">${b.desc || ""}</p>
+        </div>
+        <button type="button" class="back-btn" style="white-space:nowrap;"
+          onclick="openBuildingInfo(${JSON.stringify({ name:b.name, desc:b.desc||'', image:b.image||null })}, ${JSON.stringify(campus.name)})">
+          ℹ️ Info
+        </button>
+      </div>
+    </div>`;
+});
+
   html += `</div>`;
   const resDiv = document.getElementById("results");
   if (resDiv) resDiv.innerHTML = html;
