@@ -96,45 +96,53 @@ const campuses = [
     ]
   }
 ];
-/* ======= Building Info Modal ======= */
-function resolveImagePath(building){
-  if (building.image) return building.image;                     // preferred explicit path
-  // fallback: try a simple guess from the name (spaces kept)
-  const guess = `${building.name}.jpg`;
-  return guess;
-}
-
-function openBuildingInfo(building, campusName){
+// ------- Building Info Modal (global) -------
+(function () {
   const modal = document.getElementById("building-modal");
   if (!modal) return;
 
-  const title = document.getElementById("bm-title");
-  const campus = document.getElementById("bm-campus");
-  const desc   = document.getElementById("bm-desc");
-  const img    = document.getElementById("bm-img");
+  const els = {
+    title: document.getElementById("bm-title"),
+    campus: document.getElementById("bm-campus"),
+    desc: document.getElementById("bm-desc"),
+    img: document.getElementById("bm-img")
+  };
 
-  title.textContent  = building.name || "Building";
-  campus.textContent = campusName || "";
-  desc.textContent   = building.desc || "No description available.";
+  function openModal(data){
+    els.title.textContent  = data.name || "Building";
+    els.campus.textContent = data.campus || "";
+    els.desc.textContent   = data.desc || "No description available.";
+    els.img.src = data.image || "";
+    els.img.alt = (data.name || "Building") + " photo";
+    modal.setAttribute("aria-hidden", "false");
+  }
+  function closeModal(){
+    modal.setAttribute("aria-hidden", "true");
+  }
 
-  const src = resolveImagePath(building);
-  img.src = src;
-  img.alt = building.name ? `${building.name} photo` : "Building photo";
-  // show modal
-  modal.setAttribute("aria-hidden", "false");
-}
-window.closeBuildingInfo = function(){ 
-  const modal = document.getElementById("building-modal"); 
-  if (modal) modal.setAttribute("aria-hidden", "true"); 
-};
+  // expose (optional)
+  window.openBuildingInfo = openModal;
+  window.closeBuildingInfo = closeModal;
 
-// helper used from marker popups (string-safe)
-window.openBuildingInfoFromMap = function(campusId, bIndex){
-  const campus = campuses.find(c => c.id === campusId);
-  if (!campus) return;
-  const b = campus.buildings[bIndex];
-  openBuildingInfo(b, campus.name);
-};
+  // delegate clicks for any .js-building-info button
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".js-building-info");
+    if (btn){
+      openModal({
+        name:   btn.dataset.name,
+        desc:   btn.dataset.desc,
+        campus: btn.dataset.campus,
+        image:  btn.dataset.image
+      });
+    }
+    if (e.target.matches("[data-close-modal]")) closeModal();
+  });
+
+  // esc to close
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+})();
 
 /* ======= Map & UI State ======= */
 let map;
