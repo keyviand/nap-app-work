@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<div>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>MGA Campus Navigation</title>
-  
+
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- App CSS -->
   <link rel="stylesheet" href="NavApp (2).css" />
-</div>
-<div>
- 
+</head>
+<body>
   <div class="container">
-   <div class="mga-header">
-    <img
-      src="mga-header-logo.png"
-      alt="Middle Georgia State University"
-      class="mga-logo"
-    />
-  </div>
+    <div class="mga-header">
+      <img
+        src="mga-header-logo.png"
+        alt="Middle Georgia State University"
+        class="mga-logo"
+      />
+    </div>
+
     <h1>Navigation</h1>
 
     <div class="search-box">
       <input id="search" type="text" placeholder="Search campuses or buildings..." aria-label="Search" />
       <button type="button" id="search-btn">Search</button>
     </div>
+
     <div class="map-container">
       <div id="map"></div>
 
@@ -38,27 +39,27 @@
       </aside>
     </div>
   </div>
+
   <!-- Building Info Modal -->
-<div id="building-modal" class="mga-modal" aria-hidden="true" role="dialog" aria-label="Building details">
-  <div class="mga-modal__backdrop" data-close-modal></div>
-  <div class="mga-modal__dialog" role="document">
-    <button class="mga-modal__close" type="button" data-close-modal aria-label="Close">×</button>
-    <div class="mga-modal__media">
-      <img id="bm-img" alt="" />
-    </div>
-    <div class="mga-modal__body">
-      <h3 id="bm-title"></h3>
-      <p id="bm-campus" class="muted" style="margin-top:-6px"></p>
-      <p id="bm-desc" style="margin-top:8px"></p>
+  <div id="building-modal" class="mga-modal" aria-hidden="true" role="dialog" aria-label="Building details">
+    <div class="mga-modal__backdrop" data-close-modal></div>
+    <div class="mga-modal__dialog" role="document">
+      <button class="mga-modal__close" type="button" data-close-modal aria-label="Close">×</button>
+      <div class="mga-modal__media">
+        <img id="bm-img" alt="" />
+      </div>
+      <div class="mga-modal__body">
+        <h3 id="bm-title"></h3>
+        <p id="bm-campus" class="muted" style="margin-top:-6px"></p>
+        <p id="bm-desc" style="margin-top:8px"></p>
+      </div>
     </div>
   </div>
-</div>
 
-  <!-- Only this script -->
+  <!-- App JS (after DOM so it can find the elements) -->
   <script src="NavApp_fixed.js"></script>
-</div>
+</body>
 </html>
-
 
 
 
