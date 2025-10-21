@@ -493,14 +493,14 @@ function showCampus(campusId){
         <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
           <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
             <h4 style="margin-bottom:4px;">${b.name}</h4>
-            <p class="muted" style="margin:0;">${b.longDesc || ""}</p>
+            <p class="muted" style="margin:0;">${b.shortDesc || ""}</p>
           </div>
           <button
             type="button"
             class="back-btn js-building-info"
             style="white-space:nowrap;"
             data-name="${b.name.replace(/"/g,'&quot;')}"
-            data-desc="${(b.shortDesc || "").replace(/"/g,'&quot;')}"
+            data-desc="${(b.longDesc || "").replace(/"/g,'&quot;')}"
             data-campus="${campus.name.replace(/"/g,'&quot;')}"
             data-image="${(b.image || "").replace(/"/g,'&quot;')}"
           >ℹ️ Info</button>
