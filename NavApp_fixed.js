@@ -45,14 +45,18 @@ const campuses = [
     lat: 32.808092, lng: -83.732058,
     buildings: [
       { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services" },
-     { 
-  name: "Library (LIB)", 
-  lat: 32.808469, 
-  lng: -83.732992, 
-  desc: "Library (LLIB) – Features the Library Café, Student Success Center, and Museum of Technology. Offers research resources, study areas, and the Technical Assistance Center for students.", 
-  image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg" 
+     {
+  name: "Library (LIB)",
+  lat: 32.808469,
+  lng: -83.732992,
+  shortDesc: "Library",
+  longDesc: `
+    <h3>Library (LLIB)</h3>
+    <p>Features the <strong>Library Café</strong>, <strong>Student Success Center</strong>, and <strong>Museum of Technology</strong>. 
+    Offers research resources, study areas, and the <strong>Technical Assistance Center</strong> for students.</p>
+  `,
+  image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg"
 },
-
       { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities" },
       { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services" },
       { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math" },
@@ -489,14 +493,14 @@ function showCampus(campusId){
         <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
           <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
             <h4 style="margin-bottom:4px;">${b.name}</h4>
-            <p class="muted" style="margin:0;">${b.desc || ""}</p>
+            <p class="muted" style="margin:0;">${b.longDesc || ""}</p>
           </div>
           <button
             type="button"
             class="back-btn js-building-info"
             style="white-space:nowrap;"
             data-name="${b.name.replace(/"/g,'&quot;')}"
-            data-desc="${(b.desc || "").replace(/"/g,'&quot;')}"
+            data-desc="${(b.shortDesc || "").replace(/"/g,'&quot;')}"
             data-campus="${campus.name.replace(/"/g,'&quot;')}"
             data-image="${(b.image || "").replace(/"/g,'&quot;')}"
           >ℹ️ Info</button>
