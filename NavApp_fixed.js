@@ -10,32 +10,32 @@ const campuses = [
     address: "1100 Second Street SE, Cochran, GA 31014",
     lat: 32.379845, lng: -83.342543,
     buildings: [
-      { name: "Russell Auditorium", lat: 32.38039, lng: -83.346899, desc: "Performance venue", longDesc: "" },
-      { name: "Student Rec Center", lat: 32.381122, lng: -83.341309, desc: "Fitness facilities", longDesc: "" },
-      { name: "Roberts Library", lat: 32.381032, lng: -83.347188, desc: "Main library", longDesc: "" },
-      { name: "Dillard Hall", lat: 32.381087, lng: -83.345772, desc: "Science labs and classrooms", longDesc: "" },
-      { name: "Grace Hall", lat: 32.381222, lng: -83.34427, desc: "Residence hall", longDesc: "" },
-      { name: "Harris Hall", lat: 32.379765, lng: -83.347371, desc: "Residence hall", longDesc: "" },
-      { name: "Talmadge Hall", lat: 32.379303, lng: -83.34677, desc: "Residence hall", longDesc: "" },
-      { name: "Peacock Office Building", lat: 32.379693, lng: -83.346072, desc: "Administrative offices", longDesc: "" },
-      { name: "Wiggs Office Building", lat: 32.380362, lng: -83.345279, desc: "Faculty offices", longDesc: "" },
-      { name: "Walker Hall", lat: 32.380037, lng: -83.345622, desc: "Classrooms and auditorium", longDesc: "" },
-      { name: "Ebenezer Hall", lat: 32.380498, lng: -83.344785, desc: "Residence hall", longDesc: "" },
-      { name: "Morris Gymnasium", lat: 32.379883, lng: -83.344452, desc: "Athletic and fitness facility", longDesc: "" },
-      { name: "Georgia Hall", lat: 32.380046, lng: -83.343616, desc: "Dining hall", longDesc: "" },
-      { name: "Alderman Hall", lat: 32.37924, lng: -83.345397, desc: "Classrooms", longDesc: "" },
-      { name: "Whipple Hall", lat: 32.380797, lng: -83.34192, desc: "Academic building", longDesc: "" },
-      { name: "Athletic Training Facility", lat: 32.380598, lng: -83.340901, desc: "Sports medicine and training", longDesc: "" },
-      { name: "Anderson Dormitory", lat: 32.382055, lng: -83.344098, desc: "Residence hall", longDesc: "" },
-      { name: "Haynes Dormitory", lat: 32.381422, lng: -83.34354, desc: "Residence hall", longDesc: "" },
-      { name: "Gateway Dormitory", lat: 32.382155, lng: -83.34265, desc: "Residence hall", longDesc: "" },
-      { name: "Regents Dormitory", lat: 32.381756, lng: -83.340644, desc: "Residence hall", longDesc: "" },
-      { name: "Sanford Hall", lat: 32.380656, lng: -83.346346, desc: "Career services", longDesc: "" },
-      { name: "Browning Dormitory", lat: 32.379438, lng: -83.34619, desc: "Residence hall", longDesc: "" },
-      { name: "Jackson Office Building", lat: 32.380475, lng: -83.34501, desc: "HR, IT, business", longDesc: "" },
-      { name: "Knights Dormitory", lat: 32.381538, lng: -83.342607, desc: "Residence hall", longDesc: "" },
-      { name: "Chiller Plant", lat: 32.379521, lng: -83.344935, desc: "Utility building", longDesc: "" },
-      { name: "Memorial Hall", lat: 32.380955, lng: -83.346255, desc: "Math classrooms", longDesc: "" }
+      { name: "Russell Auditorium", lat: 32.38039, lng: -83.346899, desc: "Performance venue", longDesc: "Russell Fine Arts – Home to art, music, and theater programs; includes classrooms, art studios, practice rooms, and a small performance theater." },
+      { name: "Student Rec Center", lat: 32.381122, lng: -83.341309, desc: "Fitness facilities", longDesc: "Wellness Center – Fitness and recreation facility with gym equipment, indoor track, locker rooms, and group fitness areas." },
+      { name: "Roberts Library", lat: 32.381032, lng: -83.347188, desc: "Main library", longDesc: "Roberts Library – The main library with study spaces, computer labs, tutoring, writing center, and Roberts Café serving Starbucks drinks." },
+      { name: "Dillard Hall", lat: 32.381087, lng: -83.345772, desc: "Science labs and classrooms", longDesc: "Dillard Hall – Houses Nursing and Occupational Therapy programs; features modern labs, classrooms, and student study spaces." },
+      { name: "Grace Hall", lat: 32.381222, lng: -83.34427, desc: "Residence hall", longDesc: "Grace Hall – Academic building for classroom instruction and small lecture spaces." },
+      { name: "Harris Hall", lat: 32.379765, lng: -83.347371, desc: "Residence hall", longDesc: "Harris Dormitory – Apartment-style student housing with shared living space, kitchen, and private bedrooms." },
+      { name: "Talmadge Hall", lat: 32.379303, lng: -83.34677, desc: "Residence hall", longDesc: "Talmadge Dormitory – Student housing with shared living spaces, study lounges, and community laundry facilities." },
+      { name: "Peacock Office Building", lat: 32.379693, lng: -83.346072, desc: "Administrative offices", longDesc: "Peacock Office Building – Houses faculty and staff offices and small conference spaces." },
+      { name: "Wiggs Office Building", lat: 32.380362, lng: -83.345279, desc: "Faculty offices", longDesc: "Wiggs Office Building – Office space for faculty, administration, and academic support services." },
+      { name: "Walker Hall", lat: 32.380037, lng: -83.345622, desc: "Classrooms and auditorium", longDesc: "Walker Hall – Academic hall with classrooms for social sciences and business; includes a 350-seat auditorium." },
+      { name: "Ebenezer Hall", lat: 32.380498, lng: -83.344785, desc: "Residence hall", longDesc: "Ebenezer Hall – Academic building used for lectures, labs, and department offices." },
+      { name: "Morris Gymnasium", lat: 32.379883, lng: -83.344452, desc: "Athletic and fitness facility", longDesc: "Morris Gymnasium – Main athletics gym with basketball courts, locker rooms, weight training, and seating for spectators." },
+      { name: "Georgia Hall", lat: 32.380046, lng: -83.343616, desc: "Dining hall", longDesc: "Georgia Hall – Student center housing dining services, campus store, post office, counseling, health clinic, and student activity offices." },
+      { name: "Alderman Hall", lat: 32.37924, lng: -83.345397, desc: "Classrooms", longDesc: "Alderman Hall – Academic building with classrooms and departmental offices." },
+      { name: "Whipple Hall", lat: 32.380797, lng: -83.34192, desc: "Academic building", longDesc: "Admissions / Welcome Center – The first stop for campus visitors and prospective students; offers tours, admissions counseling, and enrollment services." },
+      { name: "Athletic Training Facility", lat: 32.380598, lng: -83.340901, desc: "Sports medicine and training", longDesc: "Athletic Training Facility – Sports performance center with weight training, therapy rooms, and training equipment." },
+      { name: "Anderson Dormitory", lat: 32.382055, lng: -83.344098, desc: "Residence hall", longDesc: "Anderson Hall – Suite-style residence hall with shared bathrooms and student lounges." },
+      { name: "Haynes Dormitory", lat: 32.381422, lng: -83.34354, desc: "Residence hall", longDesc: "Haynes Hall – Academic and faculty office building with classrooms for core courses." },
+      { name: "Gateway Dormitory", lat: 32.382155, lng: -83.34265, desc: "Residence hall", longDesc: "Gateway Dormitory – Suite-style student housing with modern amenities and social areas." },
+      { name: "Regents Dormitory", lat: 32.381756, lng: -83.340644, desc: "Residence hall", longDesc: "Regents Dormitory – Residence hall featuring private bedrooms and shared suite-style bathrooms." },
+      { name: "Sanford Hall", lat: 32.380656, lng: -83.346346, desc: "Career services", longDesc: "Sanford Hall – Dining and social hall featuring Sanford Café and student gathering areas." },
+      { name: "Browning Dormitory", lat: 32.379438, lng: -83.34619, desc: "Residence hall", longDesc: "Browning Dormitory – Traditional residence hall with shared bathrooms and community lounges." },
+      { name: "Jackson Office Building", lat: 32.380475, lng: -83.34501, desc: "HR, IT, business", longDesc: "Jackson Office Building – Administrative building housing Human Resources and related offices." },
+      { name: "Knights Dormitory", lat: 32.381538, lng: -83.342607, desc: "Residence hall", longDesc: "Knights Hall – Residence hall for students featuring suite-style rooms, Wi-Fi, and communal study spaces." },
+      { name: "Chiller Plant", lat: 32.379521, lng: -83.344935, desc: "Utility building", longDesc: "Chiller Plant – Utility building providing heating and cooling infrastructure to multiple campus facilities." },
+      { name: "Memorial Hall", lat: 32.380955, lng: -83.346255, desc: "Math classrooms", longDesc: "Memorial Hall – Academic and office building for general education and faculty offices." }
     ]
   },
   {
@@ -44,23 +44,23 @@ const campuses = [
     address: "100 University Parkway, Macon, GA 31206",
     lat: 32.808092, lng: -83.732058,
     buildings: [
-      { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services", longDesc: "" },
+      { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services", longDesc: "Administration (ADMIN) – Central building for university leadership, including Academic Affairs, Finance & Operations, the President’s Office, and University Advancement. Serves as the main administrative hub for MGA’s Macon campus." },
       { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "Library", longDesc: "Library (LLIB) – Features the Library Café, Student Success Center, and Museum of Technology. Offers research resources, study areas, and the Technical Assistance Center for students.", image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg" },
-      { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities", longDesc: "" },
-      { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services", longDesc: "" },
-      { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math", longDesc: "" },
-      { name: "Math Auditorium (AUD)", lat: 32.808717, lng: -83.73414, desc: "Math", longDesc: "" },
-      { name: "Charles H. Jones Building (Jones)", lat: 32.808732, lng: -83.735159, desc: "", longDesc: "" },
-      { name: "Professional Sciences Center (PSC)", lat: 32.809573, lng: -83.734059, desc: "", longDesc: "" },
-      { name: "Teacher Education Building (TEB)", lat: 32.809852, lng: -83.732879, desc: "", longDesc: "" },
-      { name: "Student Life Center (SLC)", lat: 32.810712, lng: -83.732085, desc: "Student Life", longDesc: "" },
-      { name: "Music (MUS)", lat: 32.811622, lng: -83.731222, desc: "Music", longDesc: "" },
-      { name: "Arts Complex (ART)", lat: 32.809319, lng: -83.731806, desc: "Art", longDesc: "" },
-      { name: "School of Arts & Letters (SOAL)", lat: 32.80894, lng: -83.732091, desc: "", longDesc: "" },
-      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", longDesc: "", image: "wellness.jpg" },
-      { name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", longDesc: "", image: "lakeview Pointe.jpg" },
-      { name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", longDesc: "", image: "university pointe.jpg" },
-      { name: "Peyton T. Anderson Enrollment Center (PAC)", lat: 32.809854, lng: -83.729129, desc: "Enrollment", longDesc: "" }
+      { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities", longDesc: "Facilities (FAC) – Houses the offices and workshops for facilities management, maintenance, and campus operations. Supports building upkeep and university infrastructure services." },
+      { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services", longDesc: "Campus Support Services (CSS) – Provides Police and Technology Resources for the campus community. Ensures safety, technical support, and campus security." },
+      { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math", longDesc: "Mathematics (MATH) – Home to the Mathematics Department, offering classrooms, faculty offices, and math tutoring spaces. Focused on undergraduate instruction in math and related fields." },
+      { name: "Math Auditorium (AUD)", lat: 32.808717, lng: -83.73414, desc: "Math", longDesc: "Math Auditorium (AUD) – Large lecture space accessible through the Math Building. Used for major campus events, guest speakers, and large lecture classes." },
+      { name: "Charles H. Jones Building (Jones)", lat: 32.808732, lng: -83.735159, desc: "", longDesc: "Charles H. Jones Building (JONES) – Houses the School of Health and Natural Sciences, including Nursing, Respiratory Therapy, and Natural Science departments. Includes labs, simulation rooms, and study lounges for health programs." },
+      { name: "Professional Sciences Center (PSC)", lat: 32.809573, lng: -83.734059, desc: "", longDesc: "Professional Sciences Center (PSC) – Home to the School of Business, Café Diem, and Continuing Education programs. Includes classrooms, computer labs, the Hatcher Conference Center, and Information Technology offices." },
+      { name: "Teacher Education Building (TEB)", lat: 32.809852, lng: -83.732879, desc: "", longDesc: "Teacher Education Building (TEB) – Serves the Department of Teacher Education, Social Work, and Political Science. Also houses Psychology and Criminal Justice departments with dedicated classrooms and advising offices." },
+      { name: "Student Life Center (SLC)", lat: 32.810712, lng: -83.732085, desc: "Student Life", longDesc: "Student Life Center (SLC) – Main student hub featuring dining options like the Camelot Court, game room, and offices for Student Life, Counseling, Disability Services, and Financial Aid. Also includes the Bursar, Registrar, Career Center, and Testing Center." },
+      { name: "Music (MUS)", lat: 32.811622, lng: -83.731222, desc: "Music", longDesc: "Music (MUS) – Contains the Gymnasium, Health Clinic, and Music Department facilities. Used for rehearsals, performances, wellness services, and student recreation." },
+      { name: "Arts Complex (ART)", lat: 32.809319, lng: -83.731806, desc: "Art", longDesc: "Arts Complex (ART) – Features the Art Studio, Rehearsal Hall, and Theatre. Serves as the creative center for visual and performing arts programs." },
+      { name: "School of Arts & Letters (SOAL)", lat: 32.80894, lng: -83.732091, desc: "", longDesc: "School of Arts & Letters (SOAL) – Houses the English, Media, Culture & the Arts, and History departments. Includes classrooms, faculty offices, and collaborative learning areas." },
+      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", longDesc: "Recreation & Wellness Center (REC) – Modern fitness and recreation facility offering workout equipment, group fitness rooms, locker rooms, and Duke’s Spot dining area.", image: "wellness.jpg" },
+      { name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", longDesc: "Lakeview Pointe (LP) – On-campus student housing offering apartment-style suites with kitchens, lounges, laundry, and study areas overlooking the lake.", image: "lakeview Pointe.jpg" },
+      { name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", longDesc: "University Pointe (UP) – Upper-level student housing with suite-style rooms and shared common spaces. Includes Wi-Fi, study lounges, and recreational areas.", image: "university pointe.jpg" },
+      { name: "Peyton T. Anderson Enrollment Center (PAC)", lat: 32.809854, lng: -83.729129, desc: "Enrollment", longDesc: "Peyton T. Anderson Enrollment Center (PAC) – Serves as the main location for Admissions and Enrollment Support Services for all MGA campuses. Guides registration, financial aid, and student onboarding." }
     ]
   },
   {
@@ -69,8 +69,8 @@ const campuses = [
     address: "800 Veterans Blvd, Dublin, GA 31021",
     lat: 32.532837, lng: -82.935989,
     buildings: [
-      { name: "Academic Building", lat: 32.532765, lng: -82.935265, desc: "Classrooms", longDesc: "" },
-      { name: "Student Services", lat: 32.53282, lng: -82.936, desc: "Admissions", longDesc: "" }
+      { name: "Academic Building", lat: 32.532765, lng: -82.935265, desc: "Classrooms", longDesc: "Dublin Center – The main campus building serving as a central hub for students; includes classrooms, science and computer labs, faculty offices, and the campus bookstore. Provides convenient access to academic advising and student support services." },
+      { name: "Student Services", lat: 32.53282, lng: -82.936, desc: "Admissions", longDesc: "Dublin Center Library Building – Houses administrative offices, financial aid services, faculty offices, and additional classrooms. Offers study areas, computer access, and support resources for students." }
     ]
   },
   {
@@ -79,9 +79,9 @@ const campuses = [
     address: "100 University Boulevard, Warner Robins, GA 31093",
     lat: 32.613917, lng: -83.605486,
     buildings: [
-      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life", longDesc: "", image: "WR Thomas Hall.jpg" },
-      { name: "Academic Services Building", lat: 32.61784, lng: -83.608701, desc: "Classrooms, labs, Walker Auditorium", longDesc: "" },
-      { name: "Oak Hall", lat: 32.615262, lng: -83.607937, desc: "Academic Resource Center", longDesc: "" }
+      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life", longDesc: "Thomas Hall (WRC1) – Main academic building featuring classrooms and Student Life offices. Provides collaborative learning spaces and areas for student activities and engagement.", image: "WR Thomas Hall.jpg" },
+      { name: "Academic Services Building", lat: 32.61784, lng: -83.608701, desc: "Classrooms, labs, Walker Auditorium", longDesc: "Academic Services Building (WRC2) – Houses administrative and faculty offices, classrooms, and science labs. Includes the Walker Auditorium, a large space used for lectures, presentations, and campus events." },
+      { name: "Oak Hall", lat: 32.615262, lng: -83.607937, desc: "Academic Resource Center", longDesc: "Oak Hall (WRC3) – Home to the Academic Resource Center, campus Bookstore, Library, and STEM Wing. Also, classrooms and faculty offices support science, technology, engineering, and math programs." }
     ]
   },
   {
@@ -90,9 +90,9 @@ const campuses = [
     address: "71 Airport Road, Eastman, GA 31023",
     lat: 32.208394, lng: -83.128126,
     buildings: [
-      { name: "Primary Academic Building", lat: 32.20794, lng: -83.127939, desc: "Classrooms, Teaching Labs, Computer Labs; five hangars in main building for aircraft storage and maintenance", longDesc: "" },
-      { name: "W.S. Stuckey Terminal Building", lat: 32.213406, lng: -83.125911, desc: "Terminal Building / Training Facility, Air Traffic Control Tower, Simulation Equipment", longDesc: "" },
-      { name: "Aviation Hall", lat: 32.212053, lng: -83.126727, desc: "Student housing facility", longDesc: "" }
+      { name: "Primary Academic Building", lat: 32.20794, lng: -83.127939, desc: "Classrooms, Teaching Labs, Computer Labs; five hangars in main building for aircraft storage and maintenance", longDesc: "Main Campus – Central academic building housing administrative offices, faculty offices, and classrooms. Serves as the hub for general education courses and campus operations." },
+      { name: "W.S. Stuckey Terminal Building", lat: 32.213406, lng: -83.125911, desc: "Terminal Building / Training Facility, Air Traffic Control Tower, Simulation Equipment", longDesc: "Terminal Building – Located at the Heart of Georgia Regional Airport, this facility connects MGA’s aviation program with real-world flight operations and provides access to active runways and flight support areas." },
+      { name: "Aviation Hall", lat: 32.212053, lng: -83.126727, desc: "Student housing facility", longDesc: "Aviation Hall – Residential dormitory for aviation students, providing convenient housing close to classrooms and training facilities. Includes furnished rooms, lounges, and laundry areas." }
     ]
   }
 ];
