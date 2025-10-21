@@ -492,7 +492,7 @@ function showCampus(campusId){
             data-desc="${(b.longDesc || "").replace(/"/g,'&quot;')}"
             data-campus="${campus.name.replace(/"/g,'&quot;')}"
             data-image="${(b.image || "").replace(/"/g,'&quot;')}"
-          >infobutton.jpg</button>
+          ><img src="infobutton.jpg"></button>
         </div>
       </div>`;
   });
