@@ -10,32 +10,32 @@ const campuses = [
     address: "1100 Second Street SE, Cochran, GA 31014",
     lat: 32.379845, lng: -83.342543,
     buildings: [
-      { name: "Russell Auditorium", lat: 32.38039, lng: -83.346899, desc: "Performance venue" },
-      { name: "Student Rec Center", lat: 32.381122, lng: -83.341309, desc: "Fitness facilities" },
-      { name: "Roberts Library", lat: 32.381032, lng: -83.347188, desc: "Main library" },
-      { name: "Dillard Hall", lat: 32.381087, lng: -83.345772, desc: "Science labs and classrooms" },
-      { name: "Grace Hall", lat: 32.381222, lng: -83.34427, desc: "Residence hall" },
-      { name: "Harris Hall", lat: 32.379765, lng: -83.347371, desc: "Residence hall" },
-      { name: "Talmadge Hall", lat: 32.379303, lng: -83.34677, desc: "Residence hall" },
-      { name: "Peacock Office Building", lat: 32.379693, lng: -83.346072, desc: "Administrative offices" },
-      { name: "Wiggs Office Building", lat: 32.380362, lng: -83.345279, desc: "Faculty offices" },
-      { name: "Walker Hall", lat: 32.380037, lng: -83.345622, desc: "Classrooms and auditorium" },
-      { name: "Ebenezer Hall", lat: 32.380498, lng: -83.344785, desc: "Residence hall" },
-      { name: "Morris Gymnasium", lat: 32.379883, lng: -83.344452, desc: "Athletic and fitness facility" },
-      { name: "Georgia Hall", lat: 32.380046, lng: -83.343616, desc: "Dining hall" },
-      { name: "Alderman Hall", lat: 32.37924, lng: -83.345397, desc: "Classrooms" },
-      { name: "Whipple Hall", lat: 32.380797, lng: -83.34192, desc: "Academic building" },
-      { name: "Athletic Training Facility", lat: 32.380598, lng: -83.340901, desc: "Sports medicine and training" },
-      { name: "Anderson Dormitory", lat: 32.382055, lng: -83.344098, desc: "Residence hall" },
-      { name: "Haynes Dormitory", lat: 32.381422, lng: -83.34354, desc: "Residence hall" },
-      { name: "Gateway Dormitory", lat: 32.382155, lng: -83.34265, desc: "Residence hall" },
-      { name: "Regents Dormitory", lat: 32.381756, lng: -83.340644, desc: "Residence hall" },
-      { name: "Sanford Hall", lat: 32.380656, lng: -83.346346, desc: "Career services" },
-      { name: "Browning Dormitory", lat: 32.379438, lng: -83.34619, desc: "Residence hall" },
-      { name: "Jackson Office Building", lat: 32.380475, lng: -83.34501, desc: "HR, IT, business" },
-      { name: "Knights Dormitory", lat: 32.381538, lng: -83.342607, desc: "Residence hall" },
-      { name: "Chiller Plant", lat: 32.379521, lng: -83.344935, desc: "Utility building" },
-      { name: "Memorial Hall", lat: 32.380955, lng: -83.346255, desc: "Math classrooms" }
+      { name: "Russell Auditorium", lat: 32.38039, lng: -83.346899, desc: "Performance venue", longDesc: "" },
+      { name: "Student Rec Center", lat: 32.381122, lng: -83.341309, desc: "Fitness facilities", longDesc: "" },
+      { name: "Roberts Library", lat: 32.381032, lng: -83.347188, desc: "Main library", longDesc: "" },
+      { name: "Dillard Hall", lat: 32.381087, lng: -83.345772, desc: "Science labs and classrooms", longDesc: "" },
+      { name: "Grace Hall", lat: 32.381222, lng: -83.34427, desc: "Residence hall", longDesc: "" },
+      { name: "Harris Hall", lat: 32.379765, lng: -83.347371, desc: "Residence hall", longDesc: "" },
+      { name: "Talmadge Hall", lat: 32.379303, lng: -83.34677, desc: "Residence hall", longDesc: "" },
+      { name: "Peacock Office Building", lat: 32.379693, lng: -83.346072, desc: "Administrative offices", longDesc: "" },
+      { name: "Wiggs Office Building", lat: 32.380362, lng: -83.345279, desc: "Faculty offices", longDesc: "" },
+      { name: "Walker Hall", lat: 32.380037, lng: -83.345622, desc: "Classrooms and auditorium", longDesc: "" },
+      { name: "Ebenezer Hall", lat: 32.380498, lng: -83.344785, desc: "Residence hall", longDesc: "" },
+      { name: "Morris Gymnasium", lat: 32.379883, lng: -83.344452, desc: "Athletic and fitness facility", longDesc: "" },
+      { name: "Georgia Hall", lat: 32.380046, lng: -83.343616, desc: "Dining hall", longDesc: "" },
+      { name: "Alderman Hall", lat: 32.37924, lng: -83.345397, desc: "Classrooms", longDesc: "" },
+      { name: "Whipple Hall", lat: 32.380797, lng: -83.34192, desc: "Academic building", longDesc: "" },
+      { name: "Athletic Training Facility", lat: 32.380598, lng: -83.340901, desc: "Sports medicine and training", longDesc: "" },
+      { name: "Anderson Dormitory", lat: 32.382055, lng: -83.344098, desc: "Residence hall", longDesc: "" },
+      { name: "Haynes Dormitory", lat: 32.381422, lng: -83.34354, desc: "Residence hall", longDesc: "" },
+      { name: "Gateway Dormitory", lat: 32.382155, lng: -83.34265, desc: "Residence hall", longDesc: "" },
+      { name: "Regents Dormitory", lat: 32.381756, lng: -83.340644, desc: "Residence hall", longDesc: "" },
+      { name: "Sanford Hall", lat: 32.380656, lng: -83.346346, desc: "Career services", longDesc: "" },
+      { name: "Browning Dormitory", lat: 32.379438, lng: -83.34619, desc: "Residence hall", longDesc: "" },
+      { name: "Jackson Office Building", lat: 32.380475, lng: -83.34501, desc: "HR, IT, business", longDesc: "" },
+      { name: "Knights Dormitory", lat: 32.381538, lng: -83.342607, desc: "Residence hall", longDesc: "" },
+      { name: "Chiller Plant", lat: 32.379521, lng: -83.344935, desc: "Utility building", longDesc: "" },
+      { name: "Memorial Hall", lat: 32.380955, lng: -83.346255, desc: "Math classrooms", longDesc: "" }
     ]
   },
   {
@@ -44,23 +44,23 @@ const campuses = [
     address: "100 University Parkway, Macon, GA 31206",
     lat: 32.808092, lng: -83.732058,
     buildings: [
-      { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services" },
-     { name: "Library (LIB)", lat: 32.808469,  lng: -83.732992,  Desc: "Library",  longDesc: "Library (LLIB) – Features the Library Café, Student Success Center, and Museum of Technology. Offers research resources, study areas, and the Technical Assistance Center for students.", image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg"},
-      { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities" },
-      { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services" },
-      { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math" },
-      { name: "Math Auditorium (AUD)", lat: 32.808717, lng: -83.73414, desc: "Math" },
-      { name: "Charles H. Jones Building (Jones)", lat: 32.808732, lng: -83.735159, desc: "" },
-      { name: "Professional Sciences Center (PSC)", lat: 32.809573, lng: -83.734059, desc: "" },
-      { name: "Teacher Education Building (TEB)", lat: 32.809852, lng: -83.732879, desc: "" },
-      { name: "Student Life Center (SLC)", lat: 32.810712, lng: -83.732085, desc: "Student Life" },
-      { name: "Music (MUS)", lat: 32.811622, lng: -83.731222, desc: "Music" },
-      { name: "Arts Complex (ART)", lat: 32.809319, lng: -83.731806, desc: "Art" },
-      { name: "School of Arts & Letters (SOAL)", lat: 32.80894, lng: -83.732091, desc: "" },
-      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", image: "wellness.jpg" },
-{ name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", image: "lakeview Pointe.jpg" },
-{ name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", image: "university pointe.jpg" },
-      { name: "Peyton T. Anderson Enrollment Center (PAC)", lat: 32.809854, lng: -83.729129, desc: "Enrollment" }
+      { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services", longDesc: "" },
+      { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "Library", longDesc: "Library (LLIB) – Features the Library Café, Student Success Center, and Museum of Technology. Offers research resources, study areas, and the Technical Assistance Center for students.", image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg" },
+      { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities", longDesc: "" },
+      { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services", longDesc: "" },
+      { name: "Mathematics (MATH)", lat: 32.808739, lng: -83.733855, desc: "Math", longDesc: "" },
+      { name: "Math Auditorium (AUD)", lat: 32.808717, lng: -83.73414, desc: "Math", longDesc: "" },
+      { name: "Charles H. Jones Building (Jones)", lat: 32.808732, lng: -83.735159, desc: "", longDesc: "" },
+      { name: "Professional Sciences Center (PSC)", lat: 32.809573, lng: -83.734059, desc: "", longDesc: "" },
+      { name: "Teacher Education Building (TEB)", lat: 32.809852, lng: -83.732879, desc: "", longDesc: "" },
+      { name: "Student Life Center (SLC)", lat: 32.810712, lng: -83.732085, desc: "Student Life", longDesc: "" },
+      { name: "Music (MUS)", lat: 32.811622, lng: -83.731222, desc: "Music", longDesc: "" },
+      { name: "Arts Complex (ART)", lat: 32.809319, lng: -83.731806, desc: "Art", longDesc: "" },
+      { name: "School of Arts & Letters (SOAL)", lat: 32.80894, lng: -83.732091, desc: "", longDesc: "" },
+      { name: "Recreation & Wellness Center (REC)", lat: 32.811571, lng: -83.733979, desc: "Recreation", longDesc: "", image: "wellness.jpg" },
+      { name: "Lakeview Pointe (LP)", lat: 32.812787, lng: -83.733544, desc: "Residence hall", longDesc: "", image: "lakeview Pointe.jpg" },
+      { name: "University Pointe (UP)", lat: 32.810116, lng: -83.736763, desc: "Residence hall", longDesc: "", image: "university pointe.jpg" },
+      { name: "Peyton T. Anderson Enrollment Center (PAC)", lat: 32.809854, lng: -83.729129, desc: "Enrollment", longDesc: "" }
     ]
   },
   {
@@ -69,8 +69,8 @@ const campuses = [
     address: "800 Veterans Blvd, Dublin, GA 31021",
     lat: 32.532837, lng: -82.935989,
     buildings: [
-      { name: "Academic Building", lat: 32.532765, lng: -82.935265, desc: "Classrooms" },
-      { name: "Student Services", lat: 32.53282, lng: -82.936, desc: "Admissions" }
+      { name: "Academic Building", lat: 32.532765, lng: -82.935265, desc: "Classrooms", longDesc: "" },
+      { name: "Student Services", lat: 32.53282, lng: -82.936, desc: "Admissions", longDesc: "" }
     ]
   },
   {
@@ -79,9 +79,9 @@ const campuses = [
     address: "100 University Boulevard, Warner Robins, GA 31093",
     lat: 32.613917, lng: -83.605486,
     buildings: [
-      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life", image: "WR Thomas Hall.jpg" },
-      { name: "Academic Services Building", lat: 32.617840, lng: -83.608701, desc: "Classrooms, labs, Walker Auditorium" },
-      { name: "Oak Hall", lat: 32.615262, lng: -83.607937, desc: "Academic Resource Center" }
+      { name: "Thomas Hall", lat: 32.618323, lng: -83.608787, desc: "Classrooms, Student Life", longDesc: "", image: "WR Thomas Hall.jpg" },
+      { name: "Academic Services Building", lat: 32.61784, lng: -83.608701, desc: "Classrooms, labs, Walker Auditorium", longDesc: "" },
+      { name: "Oak Hall", lat: 32.615262, lng: -83.607937, desc: "Academic Resource Center", longDesc: "" }
     ]
   },
   {
@@ -90,9 +90,9 @@ const campuses = [
     address: "71 Airport Road, Eastman, GA 31023",
     lat: 32.208394, lng: -83.128126,
     buildings: [
-      { name: "Primary Academic Building", lat: 32.207940, lng: -83.127939, desc: "Classrooms, Teaching Labs, Computer Labs; five hangars in main building for aircraft storage and maintenance" },
-      { name: "W.S. Stuckey Terminal Building", lat: 32.213406, lng: -83.125911, desc: "Terminal Building / Training Facility, Air Traffic Control Tower, Simulation Equipment" },
-      { name: "Aviation Hall", lat: 32.212053, lng: -83.126727, desc: "Student housing facility" }
+      { name: "Primary Academic Building", lat: 32.20794, lng: -83.127939, desc: "Classrooms, Teaching Labs, Computer Labs; five hangars in main building for aircraft storage and maintenance", longDesc: "" },
+      { name: "W.S. Stuckey Terminal Building", lat: 32.213406, lng: -83.125911, desc: "Terminal Building / Training Facility, Air Traffic Control Tower, Simulation Equipment", longDesc: "" },
+      { name: "Aviation Hall", lat: 32.212053, lng: -83.126727, desc: "Student housing facility", longDesc: "" }
     ]
   }
 ];
