@@ -45,9 +45,7 @@ const campuses = [
     lat: 32.808092, lng: -83.732058,
     buildings: [
       { name: "Administration (ADMIN)", lat: 32.808127, lng: -83.732117, desc: "Student Services" },
-      { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "<h3>Library (LLIB)</h3>
-    <p>Features the <strong>Library Café</strong>, <strong>Student Success Center</strong>, and <strong>Museum of Technology</strong>. 
-    Offers research resources, study areas, and the <strong>Technical Assistance Center</strong> for students.</p>
+      { name: "Library (LIB)", lat: 32.808469, lng: -83.732992, desc: "Library (LLIB) – Features the Library Café, Student Success Center, and Museum of Technology. Offers research resources, study areas, and the Technical Assistance Center for students.
   ", image: "Library,_Middle_Georgia_State_University_Macon_campus.jpg" },
       { name: "Plant Services", lat: 32.806992, lng: -83.733609, desc: "Facilities" },
       { name: "Campus Support Services (CSS)", lat: 32.808145, lng: -83.733839, desc: "Campus Support Services" },
