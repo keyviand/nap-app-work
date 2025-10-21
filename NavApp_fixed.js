@@ -516,42 +516,95 @@ function zoomToBuilding(lat, lng){
 }
 function search(){
   const input = document.getElementById("search");
-  const q = (input && input.value ? input.value : "").trim().toLowerCase();
-  if (!q) return showCampus(currentCampusId);
+  const qRaw = (input && input.value ? input.value : "").trim();
+  if (!qRaw) return showCampus(currentCampusId);
 
-  const campusMatches = campuses.filter(c => c.name.toLowerCase().includes(q));
+  // --- collect matches ---
+  const campusMatches = [];
   const buildingMatches = [];
-  campuses.forEach(c => c.buildings.forEach(b => { if (b.name.toLowerCase().includes(q)) buildingMatches.push({ campus: c, building: b }); }));
 
+  campuses.forEach(c => {
+    // campus searchable text: name + address
+    const campusText = `${c.name} ${c.address}`;
+    if (matchesAllWords(campusText, qRaw)) {
+      campusMatches.push(c);
+    }
+
+    // buildings searchable text: name + desc + longDesc
+    c.buildings.forEach(b => {
+      const bText = `${b.name} ${b.desc || ""} ${b.longDesc || ""}`;
+      if (matchesAllWords(bText, qRaw)) {
+        buildingMatches.push({ campus: c, building: b });
+      }
+    });
+  });
+
+  // If exactly one building match and no campus match -> go straight there
   if (!campusMatches.length && buildingMatches.length === 1){
-    const { campus, building } = buildingMatches[0]; showCampus(campus.id);
+    const { campus, building } = buildingMatches[0];
+    showCampus(campus.id);
     return setTimeout(() => zoomToBuilding(building.lat, building.lng), 0);
   }
 
+  // --- render results + map markers ---
   clearMarkers();
   const bounds = [];
   let html = `<h3>Search Results</h3><div class="search-results">`;
+
   if (campusMatches.length){
     html += `<h4>Campuses</h4>`;
-    campusMatches.forEach(c => { bounds.push([c.lat,c.lng]); html += `<div class="result campus-result" onclick="showCampus(${c.id})"><strong>${c.name}</strong><br><span class="muted">${c.address}</span></div>`; });
+    campusMatches.forEach(c => {
+      bounds.push([c.lat, c.lng]);
+      html += `
+        <div class="result campus-result" onclick="showCampus(${c.id})">
+          <strong>${c.name}</strong><br>
+          <span class="muted">${c.address}</span>
+        </div>`;
+      const m = L.marker([c.lat, c.lng]).addTo(map);
+      markers.push(m);
+    });
   }
+
   if (buildingMatches.length){
     html += `<h4>Buildings</h4>`;
     buildingMatches.forEach(({ campus, building }) => {
       bounds.push([building.lat, building.lng]);
+
+      // click -> open campus panel then zoom to the building
       const click = `showCampus(${campus.id}); setTimeout(()=>zoomToBuilding(${building.lat}, ${building.lng}), 0);`;
-      html += `<div class="result building-result" onclick='${click}'><strong>${building.name}</strong> <span class="muted">(${campus.name})</span><br><span class="muted">${building.desc || ""}</span></div>`;
-      const m = L.marker([building.lat, building.lng], { icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] }) }).addTo(map);
+
+      html += `
+        <div class="result building-result" onclick='${click}'>
+          <strong>${building.name}</strong>
+          <span class="muted">(${campus.name})</span><br>
+          <span class="muted">
+            ${building.desc || ""}
+            ${building.longDesc ? " — " + building.longDesc.slice(0, 140) + (building.longDesc.length > 140 ? "..." : "") : ""}
+          </span>
+        </div>`;
+
+      const m = L.marker([building.lat, building.lng], {
+        icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] })
+      }).addTo(map);
       markers.push(m);
     });
   }
-  if (!campusMatches.length && !buildingMatches.length) html += `<p class="muted">No matches found.</p>`;
+
+  if (!campusMatches.length && !buildingMatches.length){
+    html += `<p class="muted">No matches found.</p>`;
+  }
+
   html += `</div>`;
+
   const resDiv = document.getElementById("results");
   if (resDiv) resDiv.innerHTML = html;
+
   if (bounds.length) map.fitBounds(bounds);
 
-  destinationLatLng = null; clearRoutes(); updateHUD(); updateSteps(null);
+  destinationLatLng = null; 
+  clearRoutes(); 
+  updateHUD(); 
+  updateSteps(null);
 }
 
 /* ======= Route helpers ======= */
