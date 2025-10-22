@@ -131,7 +131,8 @@ const campuses = [
     const b = campus.buildings[bIndex];
     window.openBuildingInfo({
       name: b.name,
-      desc: b.desc || "",
+      // We pass longDesc so the modal shows the fuller text
+      desc: b.longDesc || b.desc || "",
       campus: campus.name,
       image: b.image || ""
     });
@@ -156,7 +157,6 @@ const campuses = [
     if (e.key === "Escape") closeModal();
   });
 })();
-
 
 /* ======= Map & UI State ======= */
 let map;
@@ -194,6 +194,22 @@ function styleBtn(btn, color){
   btn.style.boxShadow = "0 1px 3px rgba(0,0,0,.15)"; btn.style.font = "14px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif";
 }
 
+// --- Search helpers (NEW) ---
+function normalize(str){
+  return (str || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function matchesAllWords(haystack, query){
+  const h = normalize(haystack);
+  const words = normalize(query).split(" ");
+  return words.every(w => w && h.includes(w));
+}
+
 /* ======= Init ======= */
 function initMap() {
   map = L.map("map", { scrollWheelZoom: false }).setView([32.808092, -83.732058], 15);
@@ -208,10 +224,15 @@ function initMap() {
   showCampus(2);
 
   window.addEventListener("resize", () => map.invalidateSize(false));
+
   const sb = document.getElementById("search-btn");
   const si = document.getElementById("search");
   if (sb) sb.addEventListener("click", search);
-  if (si) si.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
+  if (si) {
+    si.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
+    // live search (optional, feel free to remove)
+    si.addEventListener("input", () => search());
+  }
 }
 
 /* ======= Controls ======= */
@@ -454,7 +475,7 @@ function showCampus(campusId){
   markers.push(campusMarker);
 
   campus.buildings.forEach((b, idx) => {
-  const marker = L.marker([b.lat, b.lng], {
+    const marker = L.marker([b.lat, b.lng], {
       icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] })
     })
     .addTo(map)
@@ -466,8 +487,8 @@ function showCampus(campusId){
         </div>
       </div>
     `);
-  markers.push(marker);
-});
+    markers.push(marker);
+  });
 
   map.setView([campus.lat, campus.lng], 15);
 
@@ -477,19 +498,19 @@ function showCampus(campusId){
     <p class="muted">${campus.address}</p>
     <h3>Buildings</h3>
     <div class="buildings-list">`;
-    campus.buildings.forEach((b, idx) => {
+  campus.buildings.forEach((b, idx) => {
     html += `<div class="building">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
           <div style="flex:1; cursor:pointer;" onclick="zoomToBuilding(${b.lat}, ${b.lng})">
             <h4 style="margin-bottom:4px;">${b.name}</h4>
-            <p class="muted" style="margin:0;">${b.Desc || ""}</p>
+            <p class="muted" style="margin:0;">${b.desc || ""}</p>
           </div>
           <button
             type="button"
             class="back-btn js-building-info"
             style="white-space:nowrap;"
             data-name="${b.name.replace(/"/g,'&quot;')}"
-            data-desc="${(b.longDesc || "").replace(/"/g,'&quot;')}"
+            data-desc="${(b.longDesc || b.desc || "").replace(/"/g,'&quot;')}"
             data-campus="${campus.name.replace(/"/g,'&quot;')}"
             data-image="${(b.image || "").replace(/"/g,'&quot;')}"
           ><img src="infobutton.jpg" alt="Info" width="15" height="15" style="vertical-align:middle;"></button>
@@ -514,39 +535,32 @@ function zoomToBuilding(lat, lng){
   }
   recomputeRoute();
 }
+
+// ======= UPDATED SEARCH (matches name, desc, longDesc, campus name/address) =======
 function search(){
   const input = document.getElementById("search");
   const qRaw = (input && input.value ? input.value : "").trim();
   if (!qRaw) return showCampus(currentCampusId);
 
-  // --- collect matches ---
   const campusMatches = [];
   const buildingMatches = [];
 
   campuses.forEach(c => {
-    // campus searchable text: name + address
     const campusText = `${c.name} ${c.address}`;
-    if (matchesAllWords(campusText, qRaw)) {
-      campusMatches.push(c);
-    }
+    if (matchesAllWords(campusText, qRaw)) campusMatches.push(c);
 
-    // buildings searchable text: name + desc + longDesc
     c.buildings.forEach(b => {
       const bText = `${b.name} ${b.desc || ""} ${b.longDesc || ""}`;
-      if (matchesAllWords(bText, qRaw)) {
-        buildingMatches.push({ campus: c, building: b });
-      }
+      if (matchesAllWords(bText, qRaw)) buildingMatches.push({ campus: c, building: b });
     });
   });
 
-  // If exactly one building match and no campus match -> go straight there
   if (!campusMatches.length && buildingMatches.length === 1){
     const { campus, building } = buildingMatches[0];
     showCampus(campus.id);
     return setTimeout(() => zoomToBuilding(building.lat, building.lng), 0);
   }
 
-  // --- render results + map markers ---
   clearMarkers();
   const bounds = [];
   let html = `<h3>Search Results</h3><div class="search-results">`;
@@ -569,20 +583,15 @@ function search(){
     html += `<h4>Buildings</h4>`;
     buildingMatches.forEach(({ campus, building }) => {
       bounds.push([building.lat, building.lng]);
-
-      // click -> open campus panel then zoom to the building
       const click = `showCampus(${campus.id}); setTimeout(()=>zoomToBuilding(${building.lat}, ${building.lng}), 0);`;
-
       html += `
         <div class="result building-result" onclick='${click}'>
-          <strong>${building.name}</strong>
-          <span class="muted">(${campus.name})</span><br>
+          <strong>${building.name}</strong> <span class="muted">(${campus.name})</span><br>
           <span class="muted">
             ${building.desc || ""}
             ${building.longDesc ? " — " + building.longDesc.slice(0, 140) + (building.longDesc.length > 140 ? "..." : "") : ""}
           </span>
         </div>`;
-
       const m = L.marker([building.lat, building.lng], {
         icon: L.divIcon({ className:"building-icon", html:"🏛️", iconSize:[30,30] })
       }).addTo(map);
@@ -595,16 +604,12 @@ function search(){
   }
 
   html += `</div>`;
-
   const resDiv = document.getElementById("results");
   if (resDiv) resDiv.innerHTML = html;
 
   if (bounds.length) map.fitBounds(bounds);
 
-  destinationLatLng = null; 
-  clearRoutes(); 
-  updateHUD(); 
-  updateSteps(null);
+  destinationLatLng = null; clearRoutes(); updateHUD(); updateSteps(null);
 }
 
 /* ======= Route helpers ======= */
