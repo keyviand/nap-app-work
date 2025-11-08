@@ -1,87 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <link rel="apple-touch-icon" href="mga-logo.jpg">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="My Web App">
-
-  <title>MGA Campus Navigation</title>
-
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- App CSS -->
-  <link rel="stylesheet" href="NavApp (2).css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DSS – Construction Bid Estimator</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="Client‑side DSS for construction bid estimation. Save to localStorage. Export JSON/CSV. Ready for GitHub Pages." />
+  <style>
+    /* Print styling for PDF export */
+    @media print {
+      .no-print { display: none !important; }
+    }
+    /* Simple number spinner hide on some browsers */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <div class="mga-header">
-      <img
-        src="mga-header-logo.png"
-        alt="Middle Georgia State University"
-        class="mga-logo"
-      />
-    </div>
-
-    <h1>Navigation</h1>
-
-    <div class="search-box">
-      <input id="search" type="text" placeholder="Search campuses or buildings..." aria-label="Search" />
-      <button type="button" id="search-btn">Search</button>
-    </div>
-
-    <div class="map-container">
-      <div id="map"></div>
-
-      <!-- Simple info panel -->
-      <aside id="info">
-        <h2 class="panel-title">Campuses</h2>
-        <div id="results"></div>
-      </aside>
-    </div>
-  </div>
-
-  <!-- Building Info Modal -->
-  <div id="building-modal" class="mga-modal" aria-hidden="true" role="dialog" aria-label="Building details">
-    <div class="mga-modal__backdrop" data-close-modal></div>
-    <div class="mga-modal__dialog" role="document">
-      <button class="mga-modal__close" type="button" data-close-modal aria-label="Close">×</button>
-      <div class="mga-modal__media">
-        <img id="bm-img" alt="" />
-      </div>
-      <div class="mga-modal__body">
-        <h3 id="bm-title"></h3>
-        <p id="bm-campus" class="muted" style="margin-top:-6px"></p>
-        <p id="bm-desc" style="margin-top:8px"></p>
+<body class="bg-slate-50 text-slate-900">
+  <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <h1 class="text-xl md:text-2xl font-bold tracking-tight">DSS · Construction Bid Estimator</h1>
+      <div class="flex gap-2 no-print">
+        <button id="btnSave" class="px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800">Save</button>
+        <button id="btnLoad" class="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300">Load</button>
+        <button id="btnExportJSON" class="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300">Export JSON</button>
+        <button id="btnExportCSV" class="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300">Export CSV</button>
+        <button id="btnPrint" class="px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500">Print / PDF</button>
+        <a href="https://github.com/new" target="_blank" class="px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500">Deploy (GH Pages)</a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- App JS (after DOM so it can find the elements) -->
-  <script src="NavApp_fixed.js"></script>
+  <main class="max-w-6xl mx-auto px-4 pb-24">
+    <!-- Job meta -->
+    <section class="mt-6 grid md:grid-cols-3 gap-4">
+      <div class="bg-white shadow-sm rounded-2xl p-4">
+        <label class="block text-sm font-medium">Job ID</label>
+        <input id="jobId" class="mt-1 w-full rounded-xl border-slate-300 focus:ring-2 focus:ring-indigo-500" placeholder="JOB-2025-001" />
+      </div>
+      <div class="bg-white shadow-sm rounded-2xl p-4">
+        <label class="block text-sm font-medium">Client</label>
+        <input id="clientName" class="mt-1 w-full rounded-xl border-slate-300 focus:ring-2 focus:ring-indigo-500" placeholder="Georgia DOT" />
+      </div>
+      <div class="bg-white shadow-sm rounded-2xl p-4">
+        <label class="block text-sm font-medium">Submitted Date</label>
+        <input id="submittedDate" type="date" class="mt-1 w-full rounded-xl border-slate-300 focus:ring-2 focus:ring-indigo-500" />
+      </div>
+    </section>
+
+    <!-- Cost items table -->
+    <section class="mt-6">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold">Cost Items</h2>
+        <div class="no-print flex gap-2">
+          <button id="btnAddRow" class="px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800">Add Row</button>
+          <button id="btnClearRows" class="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300">Clear</button>
+        </div>
+      </div>
+      <div class="overflow-auto bg-white rounded-2xl shadow-sm">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-3 py-2 text-left">Phase</th>
+              <th class="px-3 py-2 text-right">Qty</th>
+              <th class="px-3 py-2">Unit</th>
+              <th class="px-3 py-2 text-right">Est Unit Cost</th>
+              <th class="px-3 py-2 text-right">Equip Hours</th>
+              <th class="px-3 py-2 text-right">Equip Rate</th>
+              <th class="px-3 py-2 text-right">Labor Hours</th>
+              <th class="px-3 py-2 text-right">Labor Rate</th>
+              <th class="px-3 py-2 text-right">Line Total</th>
+              <th class="px-3 py-2 text-center no-print">—</th>
+            </tr>
+          </thead>
+          <tbody id="tbody" class="divide-y divide-slate-100"></tbody>
+          <tfoot class="bg-slate-50">
+            <tr>
+              <td colspan="8" class="px-3 py-3 text-right font-semibold">Base Direct Cost</td>
+              <td id="baseDirectCost" class="px-3 py-3 text-right font-bold">$0.00</td>
+              <td class="no-print"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- Parameters -->
+    <section class="mt-6 grid md:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl shadow-sm p-4 space-y-3">
+        <h3 class="font-semibold">Pricing Parameters</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block text-sm">Engineer’s Estimate
+            <input id="engEstimate" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" placeholder="1250000" />
+          </label>
+          <label class="block text-sm">Overhead Rate (%)
+            <input id="ohRate" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" placeholder="12" />
+          </label>
+          <label class="block text-sm">Target Margin (%)
+            <input id="marginRate" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" placeholder="10" />
+          </label>
+          <label class="block text-sm">Contingency / Risk Point ($)
+            <input id="kRisk" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" placeholder="1200" />
+          </label>
+        </div>
+        <p class="text-xs text-slate-500">OH & Profit are applied to base + contingency. Contingency = k × Risk Score.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm p-4 space-y-3">
+        <h3 class="font-semibold">Risk & Market Inputs</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block text-sm">Risk Score (0–100)
+            <input id="riskScore" type="number" step="1" min="0" max="100" class="mt-1 w-full rounded-xl border-slate-300" placeholder="55" />
+          </label>
+          <label class="block text-sm">Client Score (0–1)
+            <input id="clientScore" type="number" step="0.01" min="0" max="1" class="mt-1 w-full rounded-xl border-slate-300" placeholder="0.70" />
+          </label>
+          <label class="block text-sm">Scope Complexity (1–5)
+            <input id="scopeComplexity" type="number" step="0.1" min="1" max="5" class="mt-1 w-full rounded-xl border-slate-300" placeholder="4" />
+          </label>
+          <label class="block text-sm">Market Pressure (0–1)
+            <input id="marketPressure" type="number" step="0.01" min="0" max="1" class="mt-1 w-full rounded-xl border-slate-300" placeholder="0.35" />
+          </label>
+        </div>
+        <details class="text-xs text-slate-500">
+          <summary class="cursor-pointer select-none">Model Coefficients (editable)</summary>
+          <div class="grid grid-cols-5 gap-2 mt-2">
+            <label class="block">b0
+              <input id="b0" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" value="0.25" />
+            </label>
+            <label class="block">b1 (priceSpread)
+              <input id="b1" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" value="-1.10" />
+            </label>
+            <label class="block">b2 (clientScore)
+              <input id="b2" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" value="0.35" />
+            </label>
+            <label class="block">b3 (scopeComplexity)
+              <input id="b3" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" value="-0.22" />
+            </label>
+            <label class="block">b4 (marketPressure)
+              <input id="b4" type="number" step="0.01" class="mt-1 w-full rounded-xl border-slate-300" value="-0.40" />
+            </label>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="mt-6 flex flex-wrap gap-3 no-print">
+      <button id="btnCalculate" class="px-4 py-2 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-500">Calculate</button>
+      <button id="btnWhatIf" class="px-4 py-2 rounded-2xl bg-slate-900 text-white hover:bg-slate-800">Auto What‑If (+/‑ 2%)</button>
+      <button id="btnReset" class="px-4 py-2 rounded-2xl bg-slate-200 hover:bg-slate-300">Reset</button>
+    </section>
+
+    <!-- Results tiles -->
+    <section id="results" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Cards are populated via JS -->
+    </section>
+
+    <!-- Notes -->
+    <section class="mt-8">
+      <label class="block text-sm font-medium">Notes</label>
+      <textarea id="notes" rows="4" class="mt-1 w-full rounded-xl border-slate-300" placeholder="Assumptions, exclusions, vendor quotes, schedule constraints..."></textarea>
+    </section>
+  </main>
+
+  <template id="rowTemplate">
+    <tr>
+      <td class="px-3 py-2">
+        <select class="phase w-full rounded-xl border-slate-300">
+          <option>EARTHWORK</option>
+          <option>UTIL</option>
+          <option>PAVE</option>
+          <option>TRAF</option>
+          <option>OTHER</option>
+        </select>
+      </td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.001" class="qty w-28 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2"><input class="unit w-24 rounded-xl border-slate-300" placeholder="CY/TON/LF/LS" /></td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.01" class="estUnitCost w-28 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.001" class="equipHours w-24 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.01" class="equipRate w-24 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.001" class="laborHours w-24 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2 text-right"><input type="number" step="0.01" class="laborRate w-24 text-right rounded-xl border-slate-300" /></td>
+      <td class="px-3 py-2 text-right font-medium lineTotal">$0.00</td>
+      <td class="px-3 py-2 text-center no-print"><button class="btnDel text-rose-600 hover:underline">Delete</button></td>
+    </tr>
+  </template>
+
+  <script>
+    // --- Utilities ---
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const fmt = (n) => n.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+    const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+
+    // --- Row logic ---
+    function addRow(preset = {}) {
+      const tpl = document.getElementById('rowTemplate');
+      const row = tpl.content.cloneNode(true);
+      const tr = row.querySelector('tr');
+      tr.querySelector('.phase').value = preset.phase || 'EARTHWORK';
+      tr.querySelector('.qty').value = preset.qty ?? '';
+      tr.querySelector('.unit').value = preset.unit || '';
+      tr.querySelector('.estUnitCost').value = preset.estUnitCost ?? '';
+      tr.querySelector('.equipHours').value = preset.equipHours ?? '';
+      tr.querySelector('.equipRate').value = preset.equipRate ?? '';
+      tr.querySelector('.laborHours').value = preset.laborHours ?? '';
+      tr.querySelector('.laborRate').value = preset.laborRate ?? '';
+
+      tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', recalcBase));
+      tr.querySelector('.btnDel').addEventListener('click', () => { tr.remove(); recalcBase(); });
+
+      document.getElementById('tbody').appendChild(tr);
+      recalcBase();
+    }
+
+    function recalcBase() {
+      let base = 0;
+      $$('#tbody tr').forEach(tr => {
+        const qty = +tr.querySelector('.qty').value || 0;
+        const estUnit = +tr.querySelector('.estUnitCost').value || 0;
+        const eh = +tr.querySelector('.equipHours').value || 0;
+        const er = +tr.querySelector('.equipRate').value || 0;
+        const lh = +tr.querySelector('.laborHours').value || 0;
+        const lr = +tr.querySelector('.laborRate').value || 0;
+        const line = qty*estUnit + eh*er + lh*lr;
+        tr.querySelector('.lineTotal').textContent = fmt(line);
+        base += line;
+      });
+      document.getElementById('baseDirectCost').textContent = fmt(base);
+      return base;
+    }
+
+    // --- Model math ---
+    function logistic(x) { return 1 / (1 + Math.exp(-x)); }
+    function calcCompetitivenessFactor(priceSpread, clientScore, scopeComplexity, marketPressure, coeffs) {
+      const { b0, b1, b2, b3, b4 } = coeffs;
+      const logit = b0 + b1*priceSpread + b2*clientScore + b3*scopeComplexity + b4*marketPressure;
+      const pwin = logistic(logit);
+      const cf = 0.94 + 0.12*pwin; // maps 0..1 -> 0.94..1.06
+      return { cf, pwin };
+    }
+
+    function calculate() {
+      const base = recalcBase();
+      const ohRate = (+$('#ohRate').value || 0) / 100;
+      const marginRate = (+$('#marginRate').value || 0) / 100;
+      const k = +$('#kRisk').value || 0;
+      const risk = clamp(+$('#riskScore').value || 0, 0, 100);
+      const eng = +$('#engEstimate').value || 0;
+      const clientScore = clamp(+$('#clientScore').value || 0, 0, 1);
+      const scopeComplexity = clamp(+$('#scopeComplexity').value || 1, 1, 5);
+      const marketPressure = clamp(+$('#marketPressure').value || 0, 0, 1);
+
+      const overhead = base * ohRate;
+      const contingency = k * risk;
+      const profit = (base + overhead + contingency) * marginRate;
+      const rawPrice = base + overhead + contingency + profit;
+      const priceSpread = eng > 0 ? (rawPrice - eng) / eng : 0;
+
+      const coeffs = {
+        b0: +$('#b0').value, b1: +$('#b1').value, b2: +$('#b2').value, b3: +$('#b3').value, b4: +$('#b4').value
+      };
+      const { cf, pwin } = calcCompetitivenessFactor(priceSpread, clientScore, scopeComplexity, marketPressure, coeffs);
+      const recommended = +(rawPrice * cf).toFixed(2);
+
+      renderResults({ base, overhead, contingency, profit, rawPrice, priceSpread, cf, pwin, recommended });
+      return { base, overhead, contingency, profit, rawPrice, priceSpread, cf, pwin, recommended };
+    }
+
+    function renderResults(r) {
+      const cards = [
+        { k: 'Base Direct Cost', v: fmt(r.base) },
+        { k: 'Overhead', v: fmt(r.overhead) },
+        { k: 'Contingency', v: fmt(r.contingency) },
+        { k: 'Profit', v: fmt(r.profit) },
+        { k: 'Raw Price', v: fmt(r.rawPrice) },
+        { k: 'Price Spread vs Eng.', v: (r.priceSpread*100).toFixed(2) + '%' },
+        { k: 'Competitiveness Factor', v: r.cf.toFixed(4) },
+        { k: 'P(win)', v: (r.pwin*100).toFixed(1) + '%' },
+        { k: 'Recommended Price', v: fmt(r.recommended) }
+      ];
+      const container = document.getElementById('results');
+      container.innerHTML = '';
+      cards.forEach(({k,v}) => {
+        const div = document.createElement('div');
+        div.className = 'bg-white rounded-2xl shadow-sm p-4';
+        div.innerHTML = `<div class="text-sm text-slate-500">${k}</div><div class="text-2xl font-semibold mt-1">${v}</div>`;
+        container.appendChild(div);
+      });
+    }
+
+    // --- Persistence / Export ---
+    function serialize() {
+      const rows = $$('#tbody tr').map(tr => ({
+        phase: tr.querySelector('.phase').value,
+        qty: +tr.querySelector('.qty').value || 0,
+        unit: tr.querySelector('.unit').value,
+        estUnitCost: +tr.querySelector('.estUnitCost').value || 0,
+        equipHours: +tr.querySelector('.equipHours').value || 0,
+        equipRate: +tr.querySelector('.equipRate').value || 0,
+        laborHours: +tr.querySelector('.laborHours').value || 0,
+        laborRate: +tr.querySelector('.laborRate').value || 0,
+      }));
+      const data = {
+        meta: { jobId: $('#jobId').value, clientName: $('#clientName').value, submittedDate: $('#submittedDate').value },
+        params: {
+          engEstimate: +$('#engEstimate').value || 0,
+          ohRate: +$('#ohRate').value || 0,
+          marginRate: +$('#marginRate').value || 0,
+          kRisk: +$('#kRisk').value || 0,
+          riskScore: +$('#riskScore').value || 0,
+          clientScore: +$('#clientScore').value || 0,
+          scopeComplexity: +$('#scopeComplexity').value || 0,
+          marketPressure: +$('#marketPressure').value || 0,
+          b0:+$('#b0').value, b1:+$('#b1').value, b2:+$('#b2').value, b3:+$('#b3').value, b4:+$('#b4').value,
+        },
+        rows,
+        notes: $('#notes').value
+      };
+      return data;
+    }
+
+    function deserialize(data) {
+      $('#jobId').value = data?.meta?.jobId || '';
+      $('#clientName').value = data?.meta?.clientName || '';
+      $('#submittedDate').value = data?.meta?.submittedDate || '';
+
+      $('#engEstimate').value = data?.params?.engEstimate ?? '';
+      $('#ohRate').value = data?.params?.ohRate ?? '';
+      $('#marginRate').value = data?.params?.marginRate ?? '';
+      $('#kRisk').value = data?.params?.kRisk ?? '';
+      $('#riskScore').value = data?.params?.riskScore ?? '';
+      $('#clientScore').value = data?.params?.clientScore ?? '';
+      $('#scopeComplexity').value = data?.params?.scopeComplexity ?? '';
+      $('#marketPressure').value = data?.params?.marketPressure ?? '';
+      $('#b0').value = data?.params?.b0 ?? 0.25;
+      $('#b1').value = data?.params?.b1 ?? -1.10;
+      $('#b2').value = data?.params?.b2 ?? 0.35;
+      $('#b3').value = data?.params?.b3 ?? -0.22;
+      $('#b4').value = data?.params?.b4 ?? -0.40;
+
+      $('#tbody').innerHTML = '';
+      (data?.rows || []).forEach(addRow);
+      $('#notes').value = data?.notes || '';
+      recalcBase();
+    }
+
+    function saveLocal() {
+      localStorage.setItem('dssBidEstimator', JSON.stringify(serialize()));
+      alert('Saved locally.');
+    }
+    function loadLocal() {
+      const raw = localStorage.getItem('dssBidEstimator');
+      if (!raw) { alert('No saved state found.'); return; }
+      try { deserialize(JSON.parse(raw)); } catch(e){ alert('Failed to load. ' + e.message); }
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(serialize(), null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = ($('#jobId').value || 'bid') + '.json';
+      a.click();
+    }
+
+    function exportCSV() {
+      const s = serialize();
+      const head = ['phase','qty','unit','estUnitCost','equipHours','equipRate','laborHours','laborRate'];
+      const rows = [head.join(',')].concat(s.rows.map(r => head.map(k => r[k]).join(',')));
+      const blob = new Blob([rows.join('\n')], {type:'text/csv'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (s.meta.jobId || 'bid') + '.csv';
+      a.click();
+    }
+
+    function resetAll() {
+      document.querySelectorAll('input').forEach(i => { if (i.type !== 'date') i.value = ''; });
+      $('#tbody').innerHTML = '';
+      $('#notes').value = '';
+      recalcBase();
+      document.getElementById('results').innerHTML = '';
+    }
+
+    function autoWhatIf() {
+      // Vary margin & OH ±2% and compute three scenarios
+      const baseState = serialize();
+      const results = [];
+      for (const delta of [-2, 0, 2]) {
+        const s = JSON.parse(JSON.stringify(baseState));
+        s.params.marginRate = Math.max(0, (s.params.marginRate || 0) + delta);
+        s.params.ohRate = Math.max(0, (s.params.ohRate || 0) + delta);
+        deserialize(s);
+        const r = calculate();
+        results.push({ label: delta === 0 ? 'Base' : (delta > 0 ? '+2% rates' : '−2% rates'), rec: r.recommended });
+      }
+      // restore
+      deserialize(baseState);
+      calculate();
+      // Render simple comparison
+      const box = document.createElement('div');
+      box.className = 'sm:col-span-2 lg:col-span-3 bg-white rounded-2xl shadow-sm p-4';
+      box.innerHTML = `<div class="text-sm text-slate-500 mb-2">What‑If Summary</div>
+        <div class="grid md:grid-cols-3 gap-3">${results.map(x => `<div class='p-3 rounded-xl bg-slate-50'><div class='text-xs text-slate-500'>${x.label}</div><div class='text-xl font-semibold'>${fmt(x.rec)}</div></div>`).join('')}</div>`;
+      const resultsCont = document.getElementById('results');
+      resultsCont.appendChild(box);
+    }
+
+    // --- Wire up ---
+    document.getElementById('btnAddRow').addEventListener('click', () => addRow());
+    document.getElementById('btnClearRows').addEventListener('click', () => { $('#tbody').innerHTML=''; recalcBase(); });
+    document.getElementById('btnCalculate').addEventListener('click', calculate);
+    document.getElementById('btnReset').addEventListener('click', resetAll);
+    document.getElementById('btnSave').addEventListener('click', saveLocal);
+    document.getElementById('btnLoad').addEventListener('click', loadLocal);
+    document.getElementById('btnExportJSON').addEventListener('click', exportJSON);
+    document.getElementById('btnExportCSV').addEventListener('click', exportCSV);
+    document.getElementById('btnPrint').addEventListener('click', () => window.print());
+    document.getElementById('btnWhatIf').addEventListener('click', autoWhatIf);
+
+    // Seed a sample on first load
+    window.addEventListener('load', () => {
+      if (!localStorage.getItem('dssBidEstimator')) {
+        $('#jobId').value = 'JOB-2025-001';
+        $('#clientName').value = 'Georgia DOT';
+        $('#engEstimate').value = 1250000;
+        $('#ohRate').value = 12; // %
+        $('#marginRate').value = 10; // %
+        $('#kRisk').value = 1200; // $/risk point
+        $('#riskScore').value = 55;
+        $('#clientScore').value = 0.7;
+        $('#scopeComplexity').value = 4;
+        $('#marketPressure').value = 0.35;
+        addRow({ phase:'EARTHWORK', qty:50000, unit:'CY', estUnitCost:8.5, equipHours:1200, equipRate:95, laborHours:1800, laborRate:55 });
+        addRow({ phase:'PAVE', qty:12000, unit:'TON', estUnitCost:95, equipHours:600, equipRate:110, laborHours:900, laborRate:60 });
+        addRow({ phase:'TRAF', qty:1, unit:'LS', estUnitCost:65000, equipHours:0, equipRate:0, laborHours:0, laborRate:0 });
+        calculate();
+      } else {
+        loadLocal();
+        calculate();
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
