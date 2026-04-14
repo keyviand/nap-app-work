@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Sugar Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Blood Sugar Tracker</h1>
+      <p>Log blood sugar readings, meals, and notes. The reading date and time are added automatically.</p>
+    </header>
+
+    <section class="card">
+      <h2>Add Entry</h2>
+      <form id="entryForm">
+        <div class="grid">
+          <label>
+            Blood Sugar Reading (mg/dL)
+            <input type="number" id="reading" min="1" step="1" placeholder="Example: 115" required />
+          </label>
+
+          <label>
+            Did you eat something?
+            <select id="ateSomething" required>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
+
+          <label>
+            Food / Drink
+            <input type="text" id="food" placeholder="Example: Oatmeal, eggs, orange juice" />
+          </label>
+
+          <label>
+            Time You Ate
+            <input type="time" id="mealTime" />
+          </label>
+
+          <label>
+            Date You Ate
+            <input type="date" id="mealDate" />
+          </label>
+
+          <label>
+            Notes
+            <textarea id="notes" rows="3" placeholder="Optional notes"></textarea>
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button type="submit">Save Entry</button>
+          <button type="button" id="clearForm" class="secondary">Clear Form</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Saved Entries</h2>
+        <div class="button-row">
+          <button id="printBtn" type="button">Print for Doctor</button>
+          <button id="exportBtn" type="button" class="secondary">Export CSV</button>
+          <button id="deleteAllBtn" type="button" class="danger">Delete All</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="entriesTable">
+          <thead>
+            <tr>
+              <th>Reading Date/Time</th>
+              <th>Reading</th>
+              <th>Ate Something</th>
+              <th>Food / Drink</th>
+              <th>Meal Date</th>
+              <th>Meal Time</th>
+              <th>Notes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="entriesBody"></tbody>
+        </table>
+      </div>
+      <p id="emptyMessage" class="empty-message">No entries saved yet.</p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
